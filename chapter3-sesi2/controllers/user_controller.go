@@ -58,7 +58,7 @@ func (controller *UserController) Login(c *gin.Context) {
 	response, err := controller.userService.Login(request)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, model.ErrorResponse{
-			Err: fmt.Sprintf("Invalid email or password"),
+			Err: fmt.Sprintf("Invalid Email or Password"),
 		})
 		return
 	}
