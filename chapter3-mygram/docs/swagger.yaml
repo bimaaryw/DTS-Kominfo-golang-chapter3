@@ -1,0 +1,1037 @@
+basePath: /
+definitions:
+  model.Comment:
+    properties:
+      commentID:
+        type: string
+      createdAt:
+        type: string
+      message:
+        type: string
+      photoID:
+        type: string
+      updatedAt:
+        type: string
+      userID:
+        type: string
+    type: object
+  model.CommentCreateReq:
+    properties:
+      message:
+        type: string
+    required:
+      - message
+    type: object
+  model.CommentDeleteRes:
+    properties:
+      comment_id:
+        type: string
+    type: object
+  model.CommentResponse:
+    properties:
+      comment_id:
+        type: string
+      created_at:
+        type: string
+      message:
+        type: string
+      photo_id:
+        type: string
+      updated_at:
+        type: string
+      user_id:
+        type: string
+    type: object
+  model.CommentUpdateReq:
+    properties:
+      message:
+        type: string
+    required:
+      - message
+    type: object
+  model.CommentUpdateRes:
+    properties:
+      comment_id:
+        type: string
+    type: object
+  model.ErrorResponse:
+    properties:
+      code:
+        type: integer
+      errors: {}
+      status:
+        type: string
+    type: object
+  model.PhotoCreateReq:
+    properties:
+      caption:
+        type: string
+      photoUrl:
+        type: string
+      title:
+        type: string
+    required:
+      - photoUrl
+      - title
+    type: object
+  model.PhotoCreateRes:
+    properties:
+      caption:
+        type: string
+      created_at:
+        type: string
+      photo_id:
+        type: string
+      photo_url:
+        type: string
+      title:
+        type: string
+      updated_at:
+        type: string
+      user_id:
+        type: string
+    type: object
+  model.PhotoDeleteRes:
+    properties:
+      photo_id:
+        type: string
+    type: object
+  model.PhotoResponse:
+    properties:
+      caption:
+        type: string
+      comments:
+        items:
+          $ref: "#/definitions/model.Comment"
+        type: array
+      created_at:
+        type: string
+      photo_id:
+        type: string
+      photo_url:
+        type: string
+      title:
+        type: string
+      updated_at:
+        type: string
+      user_id:
+        type: string
+    type: object
+  model.PhotoUpdateReq:
+    properties:
+      caption:
+        type: string
+      photo_url:
+        type: string
+      title:
+        type: string
+    required:
+      - photo_url
+      - title
+    type: object
+  model.PhotoUpdateRes:
+    properties:
+      photo_id:
+        type: string
+    type: object
+  model.SocialCreateReq:
+    properties:
+      name:
+        type: string
+      social_media_url:
+        type: string
+    required:
+      - name
+      - social_media_url
+    type: object
+  model.SocialDeleteRes:
+    properties:
+      id:
+        type: string
+    type: object
+  model.SocialResponse:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      social_media_url:
+        type: string
+      updated_at:
+        type: string
+      user_id:
+        type: string
+    type: object
+  model.SocialUpdateReq:
+    properties:
+      name:
+        type: string
+      social_media_url:
+        type: string
+    required:
+      - name
+      - social_media_url
+    type: object
+  model.SocialUpdateRes:
+    properties:
+      id:
+        type: string
+    type: object
+  model.SuccessResponse:
+    properties:
+      code:
+        type: integer
+      data: {}
+      message:
+        type: string
+    type: object
+  model.UserLoginReq:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    required:
+      - password
+      - username
+    type: object
+  model.UserLoginRes:
+    properties:
+      token:
+        type: string
+    type: object
+  model.UserRegisterReq:
+    properties:
+      age:
+        type: integer
+      email:
+        type: string
+      password:
+        minLength: 6
+        type: string
+      username:
+        type: string
+    required:
+      - age
+      - email
+      - password
+      - username
+    type: object
+  model.UserRegisterRes:
+    properties:
+      age:
+        type: integer
+      created_at:
+        type: string
+      email:
+        type: string
+      password:
+        type: string
+      updated_at:
+        type: string
+      user_id:
+        type: string
+      username:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: Mygram API untuk last project dari DTS dan Hacktiv8.
+  title: Hacktiv8 Mygram API
+  version: "1.0"
+paths:
+  /comments:
+    get:
+      consumes:
+        - application/json
+      description: get all comment
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+              - $ref: "#/definitions/model.SuccessResponse"
+              - properties:
+                  data:
+                    items:
+                      $ref: "#/definitions/model.CommentResponse"
+                    type: array
+                type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+              - $ref: "#/definitions/model.ErrorResponse"
+              - properties:
+                  errors:
+                    type: object
+                type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+              - $ref: "#/definitions/model.ErrorResponse"
+              - properties:
+                  errors:
+                    type: object
+                type: object
+      security:
+        - BearerAuth: []
+      summary: get all comment
+      tags:
+        - Comment
+  /comments/{comment_id}:
+    delete:
+      consumes:
+        - application/json
+      description: delete comment
+      parameters:
+        - description: comment_id
+          in: path
+          name: comment_id
+          required: true
+          type: string
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+              - $ref: "#/definitions/model.SuccessResponse"
+              - properties:
+                  data:
+                    $ref: "#/definitions/model.CommentDeleteRes"
+                type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+              - $ref: "#/definitions/model.ErrorResponse"
+              - properties:
+                  errors:
+                    type: object
+                type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+              - $ref: "#/definitions/model.ErrorResponse"
+              - properties:
+                  errors:
+                    type: object
+                type: object
+      security:
+        - BearerAuth: []
+      summary: delete comment
+      tags:
+        - Comment
+    get:
+      consumes:
+        - application/json
+      description: get one comment
+      parameters:
+        - description: comment_id
+          in: path
+          name: comment_id
+          required: true
+          type: string
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+              - $ref: "#/definitions/model.SuccessResponse"
+              - properties:
+                  data:
+                    $ref: "#/definitions/model.CommentResponse"
+                type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+              - $ref: "#/definitions/model.ErrorResponse"
+              - properties:
+                  errors:
+                    type: object
+                type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+              - $ref: "#/definitions/model.ErrorResponse"
+              - properties:
+                  errors:
+                    type: object
+                type: object
+      security:
+        - BearerAuth: []
+      summary: get one comment
+      tags:
+        - Comment
+    put:
+      consumes:
+        - application/json
+      description: update comment
+      parameters:
+        - description: comment_id
+          in: path
+          name: comment_id
+          required: true
+          type: string
+        - description: request is required
+          in: body
+          name: request
+          required: true
+          schema:
+            $ref: "#/definitions/model.CommentUpdateReq"
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+              - $ref: "#/definitions/model.SuccessResponse"
+              - properties:
+                  data:
+                    $ref: "#/definitions/model.CommentUpdateRes"
+                type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+              - $ref: "#/definitions/model.ErrorResponse"
+              - properties:
+                  errors:
+                    type: object
+                type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+              - $ref: "#/definitions/model.ErrorResponse"
+              - properties:
+                  errors:
+                    type: object
+                type: object
+      security:
+        - BearerAuth: []
+      summary: update comment
+      tags:
+        - Comment
+  /comments/{photo_id}:
+    post:
+      consumes:
+        - application/json
+      description: create comment for a particular user
+      parameters:
+        - description: photo_id
+          in: path
+          name: photo_id
+          required: true
+          type: string
+        - description: request is required
+          in: body
+          name: request
+          required: true
+          schema:
+            $ref: "#/definitions/model.CommentCreateReq"
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+              - $ref: "#/definitions/model.SuccessResponse"
+              - properties:
+                  data:
+                    $ref: "#/definitions/model.CommentResponse"
+                type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+              - $ref: "#/definitions/model.ErrorResponse"
+              - properties:
+                  errors:
+                    type: object
+                type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+              - $ref: "#/definitions/model.ErrorResponse"
+              - properties:
+                  errors:
+                    type: object
+                type: object
+      security:
+        - BearerAuth: []
+      summary: create comment
+      tags:
+        - Comment
+  /login:
+    post:
+      consumes:
+        - application/json
+      description: login user using username and password
+      parameters:
+        - description: request is required
+          in: body
+          name: request
+          required: true
+          schema:
+            $ref: "#/definitions/model.UserLoginReq"
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+              - $ref: "#/definitions/model.SuccessResponse"
+              - properties:
+                  data:
+                    $ref: "#/definitions/model.UserLoginRes"
+                type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+              - $ref: "#/definitions/model.ErrorResponse"
+              - properties:
+                  errors:
+                    type: object
+                type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+              - $ref: "#/definitions/model.ErrorResponse"
+              - properties:
+                  errors:
+                    type: object
+                type: object
+      summary: login user
+      tags:
+        - User
+  /photos:
+    get:
+      consumes:
+        - application/json
+      description: get all photo
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+              - $ref: "#/definitions/model.SuccessResponse"
+              - properties:
+                  data:
+                    items:
+                      $ref: "#/definitions/model.PhotoResponse"
+                    type: array
+                type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+              - $ref: "#/definitions/model.ErrorResponse"
+              - properties:
+                  errors:
+                    type: object
+                type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+              - $ref: "#/definitions/model.ErrorResponse"
+              - properties:
+                  errors:
+                    type: object
+                type: object
+      security:
+        - BearerAuth: []
+      summary: get all photo
+      tags:
+        - Photo
+    post:
+      consumes:
+        - application/json
+      description: create photo for a particular user
+      parameters:
+        - description: request is required
+          in: body
+          name: request
+          required: true
+          schema:
+            $ref: "#/definitions/model.PhotoCreateReq"
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+              - $ref: "#/definitions/model.SuccessResponse"
+              - properties:
+                  data:
+                    $ref: "#/definitions/model.PhotoCreateRes"
+                type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+              - $ref: "#/definitions/model.ErrorResponse"
+              - properties:
+                  errors:
+                    type: object
+                type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+              - $ref: "#/definitions/model.ErrorResponse"
+              - properties:
+                  errors:
+                    type: object
+                type: object
+      security:
+        - BearerAuth: []
+      summary: create photo
+      tags:
+        - Photo
+  /photos/{photo_id}:
+    delete:
+      consumes:
+        - application/json
+      description: delete photo
+      parameters:
+        - description: PhotoID
+          in: path
+          name: photo_id
+          required: true
+          type: string
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+              - $ref: "#/definitions/model.SuccessResponse"
+              - properties:
+                  data:
+                    $ref: "#/definitions/model.PhotoDeleteRes"
+                type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+              - $ref: "#/definitions/model.ErrorResponse"
+              - properties:
+                  errors:
+                    type: object
+                type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+              - $ref: "#/definitions/model.ErrorResponse"
+              - properties:
+                  errors:
+                    type: object
+                type: object
+      security:
+        - BearerAuth: []
+      summary: delete photo
+      tags:
+        - Photo
+    get:
+      consumes:
+        - application/json
+      description: get one photo
+      parameters:
+        - description: PhotoID
+          in: path
+          name: photo_id
+          required: true
+          type: string
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+              - $ref: "#/definitions/model.SuccessResponse"
+              - properties:
+                  data:
+                    $ref: "#/definitions/model.PhotoResponse"
+                type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+              - $ref: "#/definitions/model.ErrorResponse"
+              - properties:
+                  errors:
+                    type: object
+                type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+              - $ref: "#/definitions/model.ErrorResponse"
+              - properties:
+                  errors:
+                    type: object
+                type: object
+      security:
+        - BearerAuth: []
+      summary: get one photo
+      tags:
+        - Photo
+    put:
+      consumes:
+        - application/json
+      description: update photo
+      parameters:
+        - description: PhotoID
+          in: path
+          name: photo_id
+          required: true
+          type: string
+        - description: request is required
+          in: body
+          name: request
+          required: true
+          schema:
+            $ref: "#/definitions/model.PhotoUpdateReq"
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+              - $ref: "#/definitions/model.SuccessResponse"
+              - properties:
+                  data:
+                    $ref: "#/definitions/model.PhotoUpdateRes"
+                type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+              - $ref: "#/definitions/model.ErrorResponse"
+              - properties:
+                  errors:
+                    type: object
+                type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+              - $ref: "#/definitions/model.ErrorResponse"
+              - properties:
+                  errors:
+                    type: object
+                type: object
+      security:
+        - BearerAuth: []
+      summary: update photo
+      tags:
+        - Photo
+  /register:
+    post:
+      consumes:
+        - application/json
+      description: filled some form for registration
+      parameters:
+        - description: request is required
+          in: body
+          name: request
+          required: true
+          schema:
+            $ref: "#/definitions/model.UserRegisterReq"
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+              - $ref: "#/definitions/model.SuccessResponse"
+              - properties:
+                  data:
+                    $ref: "#/definitions/model.UserRegisterRes"
+                type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+              - $ref: "#/definitions/model.ErrorResponse"
+              - properties:
+                  errors:
+                    type: object
+                type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+              - $ref: "#/definitions/model.ErrorResponse"
+              - properties:
+                  errors:
+                    type: object
+                type: object
+      summary: register user
+      tags:
+        - User
+  /social-media:
+    get:
+      consumes:
+        - application/json
+      description: get all social media
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+              - $ref: "#/definitions/model.SuccessResponse"
+              - properties:
+                  data:
+                    items:
+                      $ref: "#/definitions/model.SocialResponse"
+                    type: array
+                type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+              - $ref: "#/definitions/model.ErrorResponse"
+              - properties:
+                  errors:
+                    type: object
+                type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+              - $ref: "#/definitions/model.ErrorResponse"
+              - properties:
+                  errors:
+                    type: object
+                type: object
+      security:
+        - BearerAuth: []
+      summary: get all social media
+      tags:
+        - Social Media
+    post:
+      consumes:
+        - application/json
+      description: create social media for a particular user
+      parameters:
+        - description: request is required
+          in: body
+          name: request
+          required: true
+          schema:
+            $ref: "#/definitions/model.SocialCreateReq"
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+              - $ref: "#/definitions/model.SuccessResponse"
+              - properties:
+                  data:
+                    $ref: "#/definitions/model.SocialResponse"
+                type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+              - $ref: "#/definitions/model.ErrorResponse"
+              - properties:
+                  errors:
+                    type: object
+                type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+              - $ref: "#/definitions/model.ErrorResponse"
+              - properties:
+                  errors:
+                    type: object
+                type: object
+      security:
+        - BearerAuth: []
+      summary: create social media
+      tags:
+        - Social Media
+  /social-media/{social_media_id}:
+    delete:
+      consumes:
+        - application/json
+      description: delete social media
+      parameters:
+        - description: social_media_id
+          in: path
+          name: social_media_id
+          required: true
+          type: string
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+              - $ref: "#/definitions/model.SuccessResponse"
+              - properties:
+                  data:
+                    $ref: "#/definitions/model.SocialDeleteRes"
+                type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+              - $ref: "#/definitions/model.ErrorResponse"
+              - properties:
+                  errors:
+                    type: object
+                type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+              - $ref: "#/definitions/model.ErrorResponse"
+              - properties:
+                  errors:
+                    type: object
+                type: object
+      security:
+        - BearerAuth: []
+      summary: delete social media
+      tags:
+        - Social Media
+    get:
+      consumes:
+        - application/json
+      description: get one social media
+      parameters:
+        - description: social_media_id
+          in: path
+          name: social_media_id
+          required: true
+          type: string
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+              - $ref: "#/definitions/model.SuccessResponse"
+              - properties:
+                  data:
+                    $ref: "#/definitions/model.SocialResponse"
+                type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+              - $ref: "#/definitions/model.ErrorResponse"
+              - properties:
+                  errors:
+                    type: object
+                type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+              - $ref: "#/definitions/model.ErrorResponse"
+              - properties:
+                  errors:
+                    type: object
+                type: object
+      security:
+        - BearerAuth: []
+      summary: get one social media
+      tags:
+        - Social Media
+    put:
+      consumes:
+        - application/json
+      description: update social media
+      parameters:
+        - description: social_media_id
+          in: path
+          name: social_media_id
+          required: true
+          type: string
+        - description: request is required
+          in: body
+          name: request
+          required: true
+          schema:
+            $ref: "#/definitions/model.SocialUpdateReq"
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+              - $ref: "#/definitions/model.SuccessResponse"
+              - properties:
+                  data:
+                    $ref: "#/definitions/model.SocialUpdateRes"
+                type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+              - $ref: "#/definitions/model.ErrorResponse"
+              - properties:
+                  errors:
+                    type: object
+                type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            allOf:
+              - $ref: "#/definitions/model.ErrorResponse"
+              - properties:
+                  errors:
+                    type: object
+                type: object
+      security:
+        - BearerAuth: []
+      summary: update social media
+      tags:
+        - Social Media
+securityDefinitions:
+  BearerAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
